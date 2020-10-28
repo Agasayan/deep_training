@@ -7,8 +7,8 @@ import pickle
 import sys
 
 sys.path.insert(0, "/home/hubert/PycharmProjects/Deep_learning")
-from aeslc.model import Model
-from aeslc.data_preparation import *
+from ag_news_subset.model import Model
+from ag_news_subset.data_preparation import *
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UNCOMMENT WHEN COMPILING FOR THE FIRST TIME

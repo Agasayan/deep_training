@@ -1,3 +1,4 @@
+# DATA LINK: http://qwone.com/~jason/20Newsgroups/
 import csv
 import numpy as np
 import pandas as pd
@@ -50,6 +51,7 @@ with open('train_labels.csv', newline='') as file:
 train_labels.pop(0)
 
 
+# given vector of indexes in dictionary, create one-hot vector of data
 def vectorize_sequences(sequences, dimension=10000):
     results = np.zeros((len(sequences), dimension))
     for i, sequence in enumerate(sequences):
@@ -57,6 +59,7 @@ def vectorize_sequences(sequences, dimension=10000):
     return results
 
 
+# create train data frames
 x_train = vectorize_sequences(train_data)
 dt_train = pd.DataFrame(x_train)
 dt_train_labels = pd.DataFrame(train_labels)
@@ -64,27 +67,31 @@ dt_train_full = pd.concat([dt_train, dt_train_labels], axis='columns').sample(fr
 x_train = dt_train_full.iloc[:, 0:-20].values
 train_labels = dt_train_full.iloc[:, -20:]
 
+# create test data frames
 x_test = vectorize_sequences(test_data)
 dt_test = pd.DataFrame(x_test)
 dt_test_labels = pd.DataFrame(test_labels)
-
 dt_test_full = pd.concat([dt_test, dt_test_labels], axis='columns').sample(frac=1).reset_index(drop=True)
 x_test = dt_test_full.iloc[:, 0:-20].values
 test_labels = dt_test_full.iloc[:, -20:]
 
+# create model
 model = models.Sequential()
 model.add(layers.Dense(64, activation='relu', input_shape=(10000,)))
 model.add(layers.Dense(64, activation='relu'))
 model.add(layers.Dense(20, activation='softmax'))
 model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 
+# distinct validation data from training set
 x_val = x_train[:1000]
 partial_x_train = x_train[1000:]
 y_val = train_labels[:1000]
 partial_y_train = train_labels[1000:]
 
+# fit into the model
 history = model.fit(partial_x_train, partial_y_train, epochs=8, batch_size=512, validation_data=(x_val, y_val))
 
+# STUFF FOR GRAPHS------------------------------------------------------------------------------------------------------
 # loss = history.history['loss']
 # val_loss = history.history['val_loss']
 # epochs = range(1, len(loss) + 1)
@@ -107,6 +114,8 @@ history = model.fit(partial_x_train, partial_y_train, epochs=8, batch_size=512, 
 # plt.ylabel('Loss')
 # plt.legend()
 # plt.show()
+# END OF GRAPHS STUFF---------------------------------------------------------------------------------------------------
 
+# and at last: evaluation
 results = model.evaluate(x_test, test_labels)
 print(results)

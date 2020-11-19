@@ -219,6 +219,6 @@
 # y_test = np.asarray(y_test).reshape(len(y_test), 4)
 # infile.close()
 
-a = [(1, 2), (3, 4), (5, 6)]
-a.sort(key=lambda x: x[1], reverse=True)
-print(len(a))
+# a = [(1, 2), (3, 4), (5, 6)]
+# a.sort(key=lambda x: x[1], reverse=True)
+# print(len(a))

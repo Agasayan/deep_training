@@ -1,3 +1,4 @@
+# DATA LINK: http://qwone.com/~jason/20Newsgroups/
 import email.message
 import pathlib
 import os
@@ -51,23 +52,25 @@ def create_data_dictionary(directory, n):  # create list of n most frequent word
                 except UnicodeDecodeError:
                     os.remove(path)
                     continue
-    # add words from the test data
-    for i in directory:
-        sub_dir = PATH_TO_TEST_DATA + i
-        for path in pathlib.Path(sub_dir).iterdir():
-            if path.is_file():
-                try:
-                    file = open(path, "r")
-                    mail = email.message_from_file(file)
-                    all_words += mail_to_words(mail.as_string())
-                except UnicodeDecodeError:
-                    os.remove(path)
-                    continue
+    # Do not add words to dictionary from test data! It was my mistake, but keep just in a case... :)
+    # # add words from the test data
+    # for i in directory:
+    #     sub_dir = PATH_TO_TEST_DATA + i
+    #     for path in pathlib.Path(sub_dir).iterdir():
+    #         if path.is_file():
+    #             try:
+    #                 file = open(path, "r")
+    #                 mail = email.message_from_file(file)
+    #                 all_words += mail_to_words(mail.as_string())
+    #             except UnicodeDecodeError:
+    #                 os.remove(path)
+    #                 continue
     all_words.pop(0)
     return most_frequent_words(all_words, n)
 
 
-def create_vector(message, dictionary):  # create vector of dictionary-only words from given mail
+def create_vector(message, dictionary):  # create vector of dictionary-only words from given mail. Word gets 'i' value,
+                                         # if it appears as i-th word in dicitonary
     data_vector = [0]
     for word in message:
         for i in range(

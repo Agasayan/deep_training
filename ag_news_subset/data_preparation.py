@@ -4,7 +4,6 @@ import random
 
 from keras.utils import to_categorical
 
-
 # Dictionary for counting how many times each word has appeared in all the data.
 # From given string, extract each word and check if it is added do dictionary.
 # If not, add to dictionary. Otherwise increment number of occurrences of this word

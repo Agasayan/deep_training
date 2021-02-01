@@ -1,5 +1,6 @@
 from keras import models
 from keras import layers
+import tensorflow as tf
 
 
 class Model:
@@ -16,19 +17,22 @@ class Model:
         self.model.add(layers.Dense(256, activation='relu', input_shape=(self.size_y,)))
         self.model.add(layers.Dropout(0.8))
 
-        self.model.add(layers.Dense(128, activation='relu'))
-        self.model.add(layers.Dropout(0.7))
+        self.model.add(layers.Dense(256, activation='relu'))
+        self.model.add(layers.Dropout(0.8))
 
-        self.model.add(layers.Dense(128, activation='relu'))
-        self.model.add(layers.Dropout(0.7))
+        self.model.add(layers.Dense(128, activation='relu', input_shape=(self.size_y,)))
+        self.model.add(layers.Dropout(0.6))
 
         self.model.add(layers.Dense(4, activation='softmax'))
 
     # train model with validation data
     def train_with_validation(self, train_set, train_labels, validate_set, validate_labels, epochs):
-        self.model.fit(train_set, train_labels, validation_data=(validate_set, validate_labels), epochs=epochs,
-                       batch_size=256)
+        history = self.model.fit(train_set, train_labels, validation_data=(validate_set, validate_labels),
+                                 epochs=epochs,
+                                 batch_size=256)
+        return history
 
     # train model without validation
     def train(self, train_set, train_labels, epochs):
-        self.model.fit(train_set, train_labels, epochs=epochs, batch_size=256)
+        history = self.model.fit(train_set, train_labels, epochs=epochs, batch_size=512)
+        return history

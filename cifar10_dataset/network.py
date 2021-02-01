@@ -5,11 +5,11 @@ from keras import layers
 from keras import models
 from keras.utils import to_categorical
 
-N_EPOCHS = 50
+N_EPOCHS = 10
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
-x_val = x_train[40000:45000]
+x_val = x_train[40000:45000] / 255
 x_train = x_train[:20000] / 255
 x_test = x_test / 255
 
